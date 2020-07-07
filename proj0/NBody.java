@@ -45,11 +45,28 @@ public class NBody {
         StdDraw.enableDoubleBuffering();
         StdDraw.setScale(-universeRadius, universeRadius);
         StdDraw.clear();
-        StdDraw.picture(0, 0, IMG_DIR + "starfield.jpg");
+        
         Body[] bodies = readBodies(filename);
-        for (Body body : bodies) {
-            StdDraw.picture(body.xxPos, body.yyPos, IMG_DIR + body.imgFileName);
+
+        double time = 0.0;
+        while (time < T) {
+            double[] xForces = new double[bodies.length];
+            double[] yForces = new double[bodies.length];
+
+            for (int i = 0; i < bodies.length; i++) {
+                xForces[i] = bodies[i].calcNetForceExertedByX(bodies);
+                yForces[i] = bodies[i].calcNetForceExertedByY(bodies);
+            }
+            
+            StdDraw.picture(0, 0, IMG_DIR + "starfield.jpg");
+
+            for (int i = 0; i < bodies.length; i++) {
+                bodies[i].update(dt, xForces[i], yForces[i]);
+                StdDraw.picture(bodies[i].xxPos, bodies[i].yyPos, IMG_DIR + bodies[i].imgFileName);
+            }
+            StdDraw.show();
+            StdDraw.pause(10);
+            time += dt;
         }
-        StdDraw.show();
     }
 }
