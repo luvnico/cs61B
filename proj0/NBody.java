@@ -36,6 +36,16 @@ public class NBody {
         return bodies;
     }
 
+    private static void printFinalState(Body[] bodies, double radius) {
+        StdOut.printf("%d\n", bodies.length);
+        StdOut.printf("%.2e\n", radius);
+        for (int i = 0; i < bodies.length; i++) {
+            StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n",
+                bodies[i].xxPos, bodies[i].yyPos, bodies[i].xxVel,
+                bodies[i].yyVel, bodies[i].mass, bodies[i].imgFileName);   
+        }
+    }
+
     public static void main(String[] args) {
         double T = Double.valueOf(args[0]);
         double dt = Double.valueOf(args[1]);
@@ -57,7 +67,7 @@ public class NBody {
                 xForces[i] = bodies[i].calcNetForceExertedByX(bodies);
                 yForces[i] = bodies[i].calcNetForceExertedByY(bodies);
             }
-            
+
             StdDraw.picture(0, 0, IMG_DIR + "starfield.jpg");
 
             for (int i = 0; i < bodies.length; i++) {
@@ -68,5 +78,7 @@ public class NBody {
             StdDraw.pause(10);
             time += dt;
         }
+
+        printFinalState(bodies, universeRadius);
     }
 }
